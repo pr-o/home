@@ -6,7 +6,11 @@ const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
 
 module.exports = (phase, { defaultConfig }) => {
-  const nextConfig = { reactStrictMode: true, swcMinify: true };
+  const nextConfig = {
+    reactStrictMode: true,
+    swcMinify: true,
+    experimental: { appDir: true },
+  };
 
   const webpackConfig = {
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
@@ -20,15 +24,14 @@ module.exports = (phase, { defaultConfig }) => {
   };
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    return {
+    return withVanillaExtract({
+      ...webpackConfig,
       ...nextConfig,
-      ...withVanillaExtract(webpackConfig),
-      experimental: { esmExternals: false },
-    };
+    });
   }
 
-  return {
+  return withVanillaExtract({
+    ...webpackConfig,
     ...nextConfig,
-    ...withVanillaExtract(webpackConfig),
-  };
+  });
 };
