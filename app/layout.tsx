@@ -1,13 +1,15 @@
-// vanilla-extract errors with Next 13 at the moment
-// import '@/styles/globals.css';
+import { ReactNode } from 'react';
+import RootStyleRegistry from '@/components/RootStyleRegistry';
 
-type Props = { children?: React.ReactNode };
+type Props = { children?: ReactNode };
 
 const RootLayout = ({ children }: Props) => {
   return (
     <html lang="en">
       <head />
-      <body>{children}</body>
+      <body>
+        <RootStyleRegistry>{children}</RootStyleRegistry>
+      </body>
     </html>
   );
 };

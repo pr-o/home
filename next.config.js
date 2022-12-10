@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
-const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
-
-const withVanillaExtract = createVanillaExtractPlugin();
 
 module.exports = (phase, { defaultConfig }) => {
   const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     swcMinify: true,
     experimental: { appDir: true },
+    compiler: { styledComponent: true },
   };
 
   const webpackConfig = {
@@ -24,14 +22,14 @@ module.exports = (phase, { defaultConfig }) => {
   };
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
-    return withVanillaExtract({
+    return {
       ...webpackConfig,
       ...nextConfig,
-    });
+    };
   }
 
-  return withVanillaExtract({
+  return {
     ...webpackConfig,
     ...nextConfig,
-  });
+  };
 };
