@@ -13,9 +13,7 @@ export function useStyledComponentsRegistry() {
   };
 
   const StyledComponentsRegistry = ({ children }: { children: React.ReactNode }) => (
-    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      {children as React.ReactElement}
-    </StyleSheetManager>
+    <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>{children}</StyleSheetManager>
   );
 
   return [StyledComponentsRegistry, styledComponentsFlushEffect] as const;

@@ -17,9 +17,12 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
   }
 
-  h1 {
-    color: red;
-    background-color: blue;
+  div[data-nextjs-scroll-focus-boundary] {
+    padding-top: 10rem;
+  }
+
+  header {
+    color: transparent; /* to prevent the initial layout shift */
   }
 
   a {
