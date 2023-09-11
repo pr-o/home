@@ -1,24 +1,21 @@
-import { ReactNode, Suspense } from 'react';
-import RootStyleRegistry from '@/components/RootStyleRegistry';
+import { ReactNode } from 'react';
 import Header from '@/components/Header/Header';
+import Providers from '@/app/providers';
 
-type Props = { children?: ReactNode };
+export const metadata = {
+  title: 'Sung',
+  description: 'root',
+};
 
-const RootLayout = ({ children }: Props) => {
+const RootLayout = ({ children }: { children?: ReactNode }) => {
   return (
-    <html lang="en">
-      <head />
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Suspense fallback={<></>}>
-          <Header
-            color={'transparent'}
-            changeColorOnScroll={{
-              height: 100,
-              color: '#008080',
-            }}
-          />
-        </Suspense>
-        <RootStyleRegistry>{children}</RootStyleRegistry>
+        <Providers>
+          <Header color={'transparent'} />
+          <main>{children}</main>
+          {/* TODO: footer */}
+        </Providers>
       </body>
     </html>
   );

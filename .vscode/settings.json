@@ -4,7 +4,7 @@
     "**/.pnp.*": true
   },
   "eslint.nodePath": ".yarn/sdks",
-  "typescript.tsdk": "../../../.yarn/berry/cache/typescript-patch-b62919807b-9.zip/node_modules/typescript/lib",
+  "typescript.tsdk": "../.yarn/berry/cache/typescript-patch-b62919807b-9.zip/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true

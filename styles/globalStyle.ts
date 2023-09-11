@@ -1,3 +1,5 @@
+'use client';
+
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -15,6 +17,8 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     min-height: 100vh;
+    color: var(--fg);
+    background-color: var(--bg);
   }
 
   div[data-nextjs-scroll-focus-boundary] {
@@ -30,5 +34,15 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0 0.25rem;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  :root {
+    --fg: #000;
+    --bg: #fff;
+  }
+
+  [data-theme="dark"] {
+    --fg: #fff;
+    --bg: #000;
   }
 `;
