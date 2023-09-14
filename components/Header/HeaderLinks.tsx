@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import HamburgerMenu from '@/assets/icons/HamburgerMenu';
 import useCheckMobile from '@/hooks/useCheckMobile';
+import ThemeButton from '@/components/ThemeButton';
 
 type Props = {
   isMobile: boolean;
@@ -17,7 +18,7 @@ const NavComponent = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <Wrapper mobileMenuOpen={mobileMenuOpen}>
+    <Wrapper>
       {!isMobile ? (
         <HeaderLinks />
       ) : (
@@ -53,6 +54,9 @@ const HeaderLinks = () => {
             3
           </Menu>
         </li>
+        <li>
+          <ThemeButton />
+        </li>
       </ul>
     </nav>
   );
@@ -87,7 +91,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const NavMenu = styled.div`
+const NavMenu = styled.div<{ mobileMenuOpen: boolean }>`
   nav {
     display: ${({ mobileMenuOpen }) => (mobileMenuOpen ? 'flex' : 'none')};
     align-items: center;
