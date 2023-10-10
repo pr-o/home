@@ -6,7 +6,7 @@ import {
   Scene,
   TextureLoader,
   Texture,
-  PlaneBufferGeometry,
+  PlaneGeometry,
   ShaderMaterial,
   Mesh,
   MeshPhongMaterial,
@@ -390,7 +390,7 @@ export default class Slide {
       u_res: { value: new Vector2(window.innerWidth, window.innerHeight) },
     };
 
-    const geometry = new PlaneBufferGeometry(1, 1, 1, 1);
+    const geometry = new PlaneGeometry(1, 1);
 
     const material = new ShaderMaterial({
       uniforms: this.uniforms,
