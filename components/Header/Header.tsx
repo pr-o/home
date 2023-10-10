@@ -7,25 +7,18 @@ import styled from 'styled-components';
 import Nav from 'components/Header/HeaderLinks';
 
 interface Props {
-  fixed?: boolean;
   color: string;
-  changeColorOnScroll: {
+  changeColorOnScroll?: {
     height: number;
     color: string;
   };
 }
 
-interface HeaderProps {
-  color?: string;
-  padding?: string;
-}
-
 const BRAND = 'Sung';
 
-const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
+const Header = ({ color, changeColorOnScroll }: Props) => {
   const [headerColor, setHeaderColor] = useState(color);
   const [padding, setPadding] = useState('1.25rem');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!changeColorOnScroll) return;
@@ -35,11 +28,11 @@ const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
 
   const changeHeaderColor = () => {
     const windowsScrollTop = window.pageYOffset;
-    if (windowsScrollTop > changeColorOnScroll.height) {
-      setHeaderColor(changeColorOnScroll.color);
+    if (windowsScrollTop > changeColorOnScroll!.height) {
+      setHeaderColor(changeColorOnScroll!.color);
       setPadding('.75rem');
     }
-    if (windowsScrollTop <= changeColorOnScroll.height) {
+    if (windowsScrollTop <= changeColorOnScroll!.height) {
       setHeaderColor(color);
       setPadding('1.25rem');
     }
@@ -52,7 +45,7 @@ const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
           <Link href="/">{BRAND}</Link>
         </Brand>
       </Left>
-      <Center>Copyright © 2023</Center>
+      <Center>{`Copyright © ${new Date().getFullYear()}`}</Center>
       <Right>
         <Nav />
       </Right>
@@ -62,7 +55,7 @@ const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
 
 export default Header;
 
-const StyledHeader = styled.header`
+const StyledHeader = styled.header<{ padding: string }>`
   position: fixed;
   display: grid;
   align-items: center;
@@ -74,7 +67,7 @@ const StyledHeader = styled.header`
   padding-top: ${({ padding }) => (padding ? padding : '.75rem')};
   padding-bottom: ${({ padding }) => (padding ? padding : '.75rem')};
   margin-bottom: 1rem;
-  box-shadow: 0 4px 18px 0px rgba(0, 0, 0, 0.12), 0 5px 5px -5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px 0px var(--fg), 0 1px 1px -1px var(--fg);
   transition: all 300ms ease 0s;
   z-index: 999;
   user-select: none;
@@ -108,21 +101,4 @@ const Brand = styled.div`
   font-size: 1.25rem;
   font-weight: 100;
   line-height: 2rem;
-`;
-
-const MobileMenu = styled.div`
-  display: none;
-  line-height: 2rem;
-  @media (max-width: 807px) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
-const Menus = styled.div`
-  display: flex;
-  @media (max-width: 807px) {
-    display: none;
-  }
 `;
