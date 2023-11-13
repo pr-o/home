@@ -1466,12 +1466,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/is-prop-valid@npm:^0.8.2":
+  version: 0.8.8
+  resolution: "@emotion/is-prop-valid@npm:0.8.8"
+  dependencies:
+    "@emotion/memoize": 0.7.4
+  checksum: bb7ec6d48c572c540e24e47cc94fc2f8dec2d6a342ae97bc9c8b6388d9b8d283862672172a1bb62d335c02662afe6291e10c71e9b8642664a8b43416cdceffac
+  languageName: node
+  linkType: hard
+
 "@emotion/is-prop-valid@npm:^1.1.0":
   version: 1.2.0
   resolution: "@emotion/is-prop-valid@npm:1.2.0"
   dependencies:
     "@emotion/memoize": "npm:^0.8.0"
   checksum: cc7a19850a4c5b24f1514665289442c8c641709e6f7711067ad550e05df331da0692a16148e85eda6f47e31b3261b64d74c5e25194d053223be16231f969d633
+  languageName: node
+  linkType: hard
+
+"@emotion/memoize@npm:0.7.4":
+  version: 0.7.4
+  resolution: "@emotion/memoize@npm:0.7.4"
+  checksum: 4e3920d4ec95995657a37beb43d3f4b7d89fed6caa2b173a4c04d10482d089d5c3ea50bbc96618d918b020f26ed6e9c4026bbd45433566576c1f7b056c3271dc
   languageName: node
   linkType: hard
 
@@ -1780,6 +1796,13 @@ __metadata:
     tiny-glob: "npm:^0.2.9"
     tslib: "npm:^2.4.0"
   checksum: 118a1971120253740121a1db0a6658c21195b7da962acf9c124b507a3df707cfc97b0b84a16edcbd4352853b182e8337da9fc6e8e3d06c60d75ae4fb42321c75
+  languageName: node
+  linkType: hard
+
+"@pmndrs/assets@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@pmndrs/assets@npm:1.6.0"
+  checksum: f58871397db203ae4708f25581f9f50ac550a4fbe0181fe298e09fd778f662377fe5fd46b6f18cf13d0ea9d5640f3d0f3b35459c189cd1a7fbecce406724f029
   languageName: node
   linkType: hard
 
@@ -4248,6 +4271,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^10.16.4":
+  version: 10.16.4
+  resolution: "framer-motion@npm:10.16.4"
+  dependencies:
+    "@emotion/is-prop-valid": ^0.8.2
+    tslib: ^2.4.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  dependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 57eb252f25a2c4ee14b024295c6a1162a53a05e0321bdb9c8a22ec266fbe777832823eaa0309e42854170fcde16c42915c6c5d0208b628fd000d6fab013c501f
+  languageName: node
+  linkType: hard
+
 "from2@npm:^2.3.0":
   version: 2.3.0
   resolution: "from2@npm:2.3.0"
@@ -4711,6 +4755,7 @@ __metadata:
   resolution: "home@workspace:."
   dependencies:
     "@next/eslint-plugin-next": ^13.0.6
+    "@pmndrs/assets": ^1.6.0
     "@radix-ui/colors": ^0.1.8
     "@radix-ui/react-aspect-ratio": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -4735,6 +4780,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.31.11
     eslint-plugin-react-hooks: ^4.6.0
+    framer-motion: ^10.16.4
     glslify: ^7.1.1
     glslify-import-loader: ^0.1.2
     glslify-loader: ^2.0.0
@@ -4750,6 +4796,7 @@ __metadata:
     react-merge-refs: ^2.0.2
     smooth-scrollbar: ^8.8.1
     styled-components: beta
+    suspend-react: ^0.1.3
     three: ^0.156.1
     typescript: 4.9.3
   languageName: unknown

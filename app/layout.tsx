@@ -1,6 +1,9 @@
+import '@/styles/global.css';
+
 import { ReactNode } from 'react';
 import Header from '@/components/Header/Header';
 import Providers from '@/app/providers';
+// import Transition from './transition-y';
 
 export const metadata = {
   title: 'Sung',
@@ -12,9 +15,10 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
     <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>
-          <Header color={'transparent'} />
-          <main>{children}</main>
-          {/* TODO: footer */}
+          <>
+            {children}
+            {/* TODO: footer */}
+          </>
         </Providers>
       </body>
     </html>

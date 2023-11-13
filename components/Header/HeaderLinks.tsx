@@ -41,6 +41,21 @@ const HeaderLinks = () => {
       <ul>
         <li>
           <Menu href="/" passHref>
+            home
+          </Menu>
+        </li>
+        <li>
+          <Menu href="/check" passHref>
+            check
+          </Menu>
+        </li>
+        <li>
+          <Menu href="/about" passHref>
+            about
+          </Menu>
+        </li>
+        <li>
+          <Menu href="/" passHref>
             1
           </Menu>
         </li>
