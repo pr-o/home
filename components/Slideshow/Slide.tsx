@@ -27,9 +27,6 @@ export default class Slide {
   anchorElement: HTMLAnchorElement;
   mainImage: HTMLImageElement;
   detailsElement: HTMLDivElement;
-  title: string;
-  subtitle: string;
-  text: HTMLSpanElement;
   images: Array<Texture> = [];
   sizes: any;
   offset: any;
@@ -58,18 +55,13 @@ export default class Slide {
     scene: any,
     imagePaths: Array<string | null>,
     fragmentShader: string,
-    vertexShader: string,
-    title: string,
-    subtitle: string
+    vertexShader: string
   ) {
     this.scene = scene;
     this.anchorElement = $el.querySelector('a');
     this.mainImage = $el.querySelector('img');
-    this.title = title;
-    this.subtitle = subtitle;
     this.detailsElement = $el.querySelector('#details');
 
-    this.text = $el.querySelector('h4');
     this.loader = new TextureLoader();
     this.sizes = new Vector2(0, 0);
     this.offset = new Vector2(0, 0);
@@ -87,75 +79,7 @@ export default class Slide {
     });
   }
 
-  createText() {
-    const fontLoader = new FontLoader();
-
-    const size = 70;
-    const height = 20;
-    const curveSegments = 4;
-    const bevelThickness = 2;
-    const bevelSize = 1.5;
-    const bevelEnabled = true;
-
-    const materials = [
-      new MeshPhongMaterial({ color: 0x004040, flatShading: true }), // front
-      new MeshPhongMaterial({ color: 0x002020 }), // side
-    ];
-
-    fontLoader.load('/fonts/optimer_bold.typeface.json', (font) => {
-      const titleGeometry = new TextGeometry(this.title, {
-        font,
-        size: 60,
-        height,
-        curveSegments,
-        bevelThickness,
-        bevelSize,
-        bevelEnabled,
-      });
-
-      const titleMesh = new Mesh(titleGeometry, materials);
-
-      titleMesh.position.x = -window.innerWidth * 0.45;
-      titleMesh.position.y = window.innerHeight * 0.05;
-      titleMesh.position.z = 1;
-
-      titleMesh.rotation.x = 0;
-      titleMesh.rotation.y = 0; //Math.PI * 2.2;
-
-      titleMesh.visible = false;
-      this.titleMesh = titleMesh;
-      this.scene.add(titleMesh);
-
-      const subtitleGeometry = new TextGeometry(this.subtitle, {
-        font,
-        size: 30,
-        height,
-        curveSegments,
-        bevelThickness,
-        bevelSize,
-        bevelEnabled,
-      });
-      const subtitleMesh = new Mesh(subtitleGeometry, materials);
-
-      subtitleMesh.position.x = -window.innerWidth * 0.4;
-      subtitleMesh.position.y = window.innerHeight * -0.05;
-      subtitleMesh.position.z = 1;
-
-      subtitleMesh.rotation.x = 0;
-      subtitleMesh.rotation.y = Math.PI * 4;
-
-      subtitleMesh.visible = false;
-      this.subtitleMesh = subtitleMesh;
-      this.scene.add(subtitleMesh);
-    });
-  }
-
   bindEvent() {
-    document.addEventListener('onClickTile', (({ detail }: CustomEvent) =>
-      this.zoom(detail)) as EventListener);
-
-    document.addEventListener('onClickClose', () => this.zoom({ target: null, open: false }));
-
     window.addEventListener('mousemove', (e) => {
       this.onMouseMove(e);
     });
@@ -163,9 +87,6 @@ export default class Slide {
       this.onResize();
     });
 
-    this.anchorElement.addEventListener('click', (e: any) => {
-      this.onClick(e);
-    });
     this.anchorElement.addEventListener('mouseenter', () => {
       this.onMouseEnter();
     });
@@ -180,115 +101,8 @@ export default class Slide {
     });
   }
 
-  onClick(e: any) {
-    e.preventDefault();
-    if (this.hasClicked || !this.mesh) return;
-
-    this.hasClicked = true;
-
-    const data = { target: this, open: true };
-    const ev = new CustomEvent('toggleDetail', { detail: data });
-    document.dispatchEvent(ev);
-  }
-
-  hide(shouldHide: boolean, open: boolean) {
-    const delay = shouldHide && !open ? 0 : 1.2;
-    const duration = 0.5;
-
-    gsap.to(this.uniforms.u_alpha, {
-      delay,
-      duration,
-      value: shouldHide && !open ? 0 : 1,
-      ease: 'power3.easeIn',
-    });
-
-    gsap.to(this.anchorElement, {
-      delay,
-      duration,
-      alpha: shouldHide && !open ? 0 : 1,
-      force3D: true,
-    });
-  }
-
-  zoom({ target, open }: OnClickTileDetail) {
-    const shouldZoom = target === this;
-
-    const delay = shouldZoom ? 0.4 : 0;
-    const duration = 1.2;
-
-    const newScale = {
-      // x: shouldZoom ? window.innerWidth * 0.45 : this.sizes.x,
-      x: shouldZoom ? this.sizes.x * 2 : this.sizes.x,
-      y: shouldZoom ? window.innerHeight - 150 : this.sizes.y,
-    };
-
-    const newPosition = {
-      x: shouldZoom
-        ? window.innerWidth / 2 - window.innerWidth * 0.05 - this.sizes.x * 0.95
-        : this.offset.x,
-      y: shouldZoom ? -20 : this.offset.y,
-    };
-
-    const newRatio = getRatio(newScale, this.images[1].image);
-
-    this.hide(!shouldZoom, !open);
-
-    setTimeout(
-      () => {
-        this.titleMesh.visible = shouldZoom ? true : false;
-        this.subtitleMesh.visible = shouldZoom ? true : false;
-      },
-      shouldZoom ? 1000 : 500
-    );
-
-    gsap.to(this.uniforms.u_progressClick, {
-      duration: 1.2,
-      value: shouldZoom ? 1 : 0,
-      ease: 'power2.inOut',
-      onComplete: () => {
-        this.isZoomed = shouldZoom;
-        this.hasClicked = open;
-
-        gsap.to(this.uniforms.u_progressHover, {
-          duration: 1,
-          value: shouldZoom ? 1 : 0,
-          ease: 'power2.inOut',
-        });
-      },
-    });
-
-    gsap.to(this.mesh.scale, {
-      delay,
-      duration,
-      x: newScale.x,
-      y: newScale.y,
-      ease: 'expo.inOut',
-      onUpdate: () => {
-        this.getBounds();
-      },
-    });
-
-    gsap.to(this.mesh.position, {
-      delay,
-      duration,
-      x: newPosition.x,
-      y: newPosition.y,
-      ease: 'expo.inOut',
-    });
-
-    gsap.to(this.uniforms.u_hoverratio.value, {
-      delay,
-      duration,
-      x: 1,
-      y: newRatio.y,
-      ease: 'expo.inOut',
-    });
-  }
-
   onMouseEnter() {
     if (!this.mesh) return;
-
-    if (this.isZoomed || this.hasClicked) return;
 
     gsap.to(this.uniforms.u_progressHover, {
       value: 1,
@@ -301,7 +115,7 @@ export default class Slide {
   }
 
   onMouseLeave() {
-    if (!this.mesh || this.isZoomed || this.hasClicked) return;
+    if (!this.mesh) return;
 
     gsap.to(this.uniforms.u_progressHover, {
       value: 0,
@@ -314,8 +128,6 @@ export default class Slide {
   }
 
   onMouseMove = (event: MouseEvent) => {
-    if (this.isZoomed || this.hasClicked) return;
-
     gsap.to(this.mouse, {
       duration: 0.5,
       x: (event.clientX / window.innerWidth) * 2 - 1,
@@ -370,8 +182,6 @@ export default class Slide {
   }
 
   init() {
-    this.createText();
-
     const [texture, hoverTexture, shape] = this.images;
 
     this.getBounds();

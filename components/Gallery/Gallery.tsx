@@ -25,7 +25,9 @@ function Images(props: {
   const group = useRef<THREE.Group>(null);
   const data = useScroll();
   const [hovered, setHovered] = useState(false);
+
   useCursor(hovered);
+  const { width } = useThree((state) => state.viewport);
 
   // fade logic
   useFrame((state, delta) => {
@@ -51,6 +53,8 @@ function Images(props: {
   });
 
   const { x, y } = position;
+  const w = width < 10 ? 0.55 : 0.895;
+
   return (
     <group ref={group}>
       <ImageImpl
@@ -60,32 +64,6 @@ function Images(props: {
         onClick={(e) => window.alert('clicked -')}
         {...props}
       />
-      <Text
-        font={suspend(medium).default}
-        fontSize={0.6}
-        lineHeight={1}
-        anchorY="top"
-        anchorX="left"
-        position={[x - 1.75, y + 2.25, 0.01]}
-        material-toneMapped={false}>
-        {title}
-      </Text>
-      <Text
-        font={suspend(regular).default}
-        fontSize={0.15}
-        anchorX="left"
-        position={[x - 1.795, y - 2.25, 0.01]}
-        material-toneMapped={false}>
-        {description}
-      </Text>
-      <Text
-        font={suspend(regular).default}
-        fontSize={0.2}
-        anchorX="left"
-        position={[x + 1.625, y - 2.25, 0.01]}
-        material-toneMapped={false}>
-        {index.toString().padStart(2, '0')}
-      </Text>
     </group>
   );
 }
@@ -95,17 +73,19 @@ function Pages({
 }: {
   info: { id: string; title: string; description: string; url: string }[];
 }) {
-  const { width } = useThree((state) => state.viewport);
+  const { width, height } = useThree((state) => state.viewport);
 
-  const w = width < 10 ? 0.5 : 0.33;
+  console.log('w h', width, height);
+
+  const w = width < 10 ? 0.45 : 0.4;
   const gap = w * 0.9;
 
   return (
     <>
       {info.map(({ id, title, description, url }, index) => (
         <Images
-          position={new THREE.Vector3(index * width * gap - 2.25, 0, 0)}
-          scale={[width * w - 0.8, 5]}
+          position={new THREE.Vector3(index * width * gap - 0.25, 0, 0)}
+          scale={[width * w - 0.8, 4]}
           index={index}
           title={title}
           description={description}
@@ -133,7 +113,7 @@ export default function App() {
 
       <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} zIndex={3}>
         <Suspense fallback={null}>
-          <ScrollControls infinite horizontal damping={4} pages={numImages * 0.37} distance={1}>
+          <ScrollControls infinite horizontal damping={4} pages={numImages * 0.5} distance={1}>
             <Scroll>
               <Pages info={frameInfo} />
             </Scroll>

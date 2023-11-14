@@ -14,12 +14,13 @@ html,
 body {
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
   color: var(--fg);
   background-color: var(--bg);
 }
 
-div[data-nextjs-scroll-focus-boundary] {
-  padding-top: 10rem;
+[data-nextjs-scroll-focus-boundary] {
+  display: contents;
 }
 
 header {
