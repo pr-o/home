@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef, FC } from 'react';
 import { gsap } from 'gsap';
-import localFont from '@next/font/local';
+import localFont from 'next/font/local';
 
 const defaultBackgroundColor = '#008080';
 const defaultTitle = 'sung';
