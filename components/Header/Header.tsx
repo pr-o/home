@@ -14,6 +14,11 @@ interface Props {
   };
 }
 
+interface HeaderProps {
+  color?: string;
+  padding?: string;
+}
+
 const BRAND = 'Sung';
 
 const Header = ({ color, changeColorOnScroll }: Props) => {
@@ -24,7 +29,7 @@ const Header = ({ color, changeColorOnScroll }: Props) => {
           <Link href="/">{BRAND}</Link>
         </Brand>
       </Left>
-      <Center>{`Copyright © ${new Date().getFullYear()}`}</Center>
+      <Center>Copyright © 2023</Center>
       <Right>
         <Nav />
       </Right>
@@ -80,4 +85,21 @@ const Brand = styled.div`
   font-size: 1.25rem;
   font-weight: 100;
   line-height: 2rem;
+`;
+
+const MobileMenu = styled.div`
+  display: none;
+  line-height: 2rem;
+  @media (max-width: 807px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const Menus = styled.div`
+  display: flex;
+  @media (max-width: 807px) {
+    display: none;
+  }
 `;
