@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header/Header';
 import Providers from '@/app/providers';
 // import Transition from './transition-y';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: 'Sung',

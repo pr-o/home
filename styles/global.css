@@ -4,8 +4,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Noto Sans KR', '-apple-system', BlinkMacSystemFont, 'Segoe UI', Ubuntu,
-    'Helvetica Neue', sans-serif;
+  /* TODO: include Noto Sans Font pack into this project */
+  font-family: 'Noto Sans KR', '-apple-system', BlinkMacSystemFont, 'Segoe UI',
+    Ubuntu, 'Helvetica Neue', 'sans-serif';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
