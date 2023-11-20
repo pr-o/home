@@ -8,6 +8,7 @@ module.exports = (phase, { defaultConfig }) => {
     swcMinify: true,
     experimental: { appDir: true },
     compiler: { styledComponent: true },
+    transpilePackages: ['three'],
   };
 
   const webpackConfig = {
