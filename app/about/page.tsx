@@ -7,7 +7,11 @@ import SlideShow from '@/components/Slideshow/SlideShow';
 // const Slideshow = dynamic(import('components/Slideshow/Slideshow'), { ssr: false });
 
 const AboutPage = () => {
-  return <SlideShow />;
+  return (
+    <>
+      <h1>Check 2</h1>
+    </>
+  );
 };
 
 export default AboutPage;
