@@ -36,6 +36,7 @@
     "gsap": "^3.11.3",
     "next": "latest",
     "next-themes": "^0.2.1",
+    "raw-loader": "^4.0.2",
     "react": "latest",
     "react-dom": "latest",
     "react-merge-refs": "^2.0.2",
