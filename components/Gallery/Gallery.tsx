@@ -138,7 +138,7 @@ export default function App() {
         height: '100%',
       }}>
       <Header color={'transparent'} />
-      <Canvas gl={{ antialias: false }} dpr={[1, 1.5]} zIndex={3}>
+      <Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
         <Suspense fallback={null}>
           <ScrollControls
             infinite
