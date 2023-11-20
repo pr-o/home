@@ -21,30 +21,9 @@ interface HeaderProps {
 
 const BRAND = 'Sung';
 
-const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
-  const [headerColor, setHeaderColor] = useState(color);
-  const [padding, setPadding] = useState('1.25rem');
-
-  useEffect(() => {
-    if (!changeColorOnScroll) return;
-    window.addEventListener('scroll', changeHeaderColor);
-    return () => window.removeEventListener('scroll', changeHeaderColor);
-  });
-
-  const changeHeaderColor = () => {
-    const windowsScrollTop = window.pageYOffset;
-    if (windowsScrollTop > changeColorOnScroll!.height) {
-      setHeaderColor(changeColorOnScroll!.color);
-      setPadding('.75rem');
-    }
-    if (windowsScrollTop <= changeColorOnScroll!.height) {
-      setHeaderColor(color);
-      setPadding('1.25rem');
-    }
-  };
-
+const Header = ({ color, changeColorOnScroll }: Props) => {
   return (
-    <StyledHeader color={headerColor} padding={padding}>
+    <StyledHeader>
       <Left>
         <Brand>
           <Link href="/">{BRAND}</Link>
@@ -60,7 +39,7 @@ const Header = ({ fixed, color, changeColorOnScroll }: Props) => {
 
 export default Header;
 
-const StyledHeader = styled.header<{ padding: string }>`
+const StyledHeader = styled.header`
   position: fixed;
   display: grid;
   align-items: center;
@@ -69,8 +48,8 @@ const StyledHeader = styled.header<{ padding: string }>`
   min-height: 3rem;
   padding: 0.75rem clamp(1rem, 4%, 10rem);
   color: var(--fg);
-  padding-top: ${({ padding }) => (padding ? padding : '.75rem')};
-  padding-bottom: ${({ padding }) => (padding ? padding : '.75rem')};
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
   margin-bottom: 1rem;
   box-shadow: 0 1px 1px 0px var(--fg), 0 1px 1px -1px var(--fg);
   transition: all 300ms ease 0s;

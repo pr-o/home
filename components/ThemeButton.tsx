@@ -18,9 +18,7 @@ export default function ThemeButton() {
   );
 }
 
-const StyledButton = styled.button`
-  border: 2px solid red;
-
+const StyledButton = styled.div`
   font-size: 1rem;
 
   padding: 0.25em 1em;

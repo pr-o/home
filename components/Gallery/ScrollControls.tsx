@@ -14,7 +14,7 @@ export type ScrollControlsProps = {
   distance?: number;
   damping?: number;
   enabled?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export type ScrollControlsState = {
@@ -129,7 +129,9 @@ export function ScrollControls({
     return () => {
       target.removeChild(el);
       raycaster.computeOffsets = oldCompute;
-      events.connect?.(oldTarget);
+      if (events && oldTarget) {
+        events.connect?.(oldTarget);
+      }
     };
   }, [pages, distance, horizontal, el, fill, fixed, target]);
 
@@ -165,6 +167,9 @@ export function ScrollControls({
         if (disableScroll) setTimeout(() => (disableScroll = false), 40);
       }
     };
+
+    if (!el) return;
+
     el.addEventListener('scroll', onScroll, { passive: true });
     requestAnimationFrame(() => (firstRun = false));
 
@@ -172,8 +177,8 @@ export function ScrollControls({
     if (horizontal) el.addEventListener('wheel', onWheel, { passive: true });
 
     return () => {
-      el.removeEventListener('scroll', onScroll);
-      if (horizontal) el.removeEventListener('wheel', onWheel);
+      el?.removeEventListener('scroll', onScroll);
+      if (horizontal) el?.removeEventListener('wheel', onWheel);
     };
   }, [el, size, infinite, state, invalidate, horizontal]);
 

@@ -25,9 +25,6 @@ import {
   hoverImagePaths,
   fragmentShaderNames,
   shapeImagePaths,
-  titles,
-  subtitles,
-  texts,
 } from 'components/Slideshow/imagePaths';
 
 import Slide, { OnClickTileDetail } from '@/components/Slideshow/Slide';
@@ -49,7 +46,6 @@ const Slideshow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const sceneRef = useRef<Scene | null>(null);
   const scrollbarRef = useRef<Scrollbar | null | undefined>(null);
-  const backButtonRef = useRef<HTMLDivElement | null>(null);
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -75,34 +71,6 @@ const Slideshow: FC = () => {
     scrollbarRef.current = scrollbar;
   };
 
-  const toggleScroll = (lock: boolean) => {
-    const duration = lock ? 0 : 1.5;
-    const delay = lock ? 0 : 1;
-    const alpha = lock ? 0 : 1;
-
-    gsap.to(progressWrapperRef.current, { delay, duration, alpha, force3D: true });
-
-    scrollbarRef.current?.updatePluginOptions('horizontalScroll', {
-      events: lock ? false : [/wheel/],
-    });
-
-    (backButtonRef?.current as HTMLDivElement)?.classList?.toggle('is-open', lock);
-  };
-
-  const onClickClose = () => {
-    const e = new CustomEvent('onClickClose');
-    document.dispatchEvent(e);
-
-    toggleScroll(false);
-  };
-
-  const onToggleView = (detail: OnClickTileDetail) => {
-    const e = new CustomEvent('onClickTile', { detail });
-    document.dispatchEvent(e);
-
-    toggleScroll(detail.open);
-  };
-
   const fragmentShaderObj: { [key: string]: string } = {
     shapeShader: shapeShader,
     trippyShader: trippyShader,
@@ -117,8 +85,6 @@ const Slideshow: FC = () => {
     window.addEventListener('resize', () => {
       onResize();
     });
-    document.addEventListener('toggleDetail', (({ detail }: CustomEvent) =>
-      onToggleView(detail)) as EventListener);
 
     initScrollbar();
     sceneRef.current = new Scene();
@@ -135,9 +101,7 @@ const Slideshow: FC = () => {
         sceneRef.current,
         images,
         fragmentShaderObj[fragmentShaderNames[i]],
-        vertexShader,
-        titles[i],
-        subtitles[i]
+        vertexShader
       );
     });
 
@@ -207,21 +171,6 @@ const Slideshow: FC = () => {
             <SlideshowProgress ref={progressRef} progress={progress ?? 0} />
           </SlideshowProgressWrapper>
         </ScrollAreaCtn>
-        <Aside>
-          <BackButtonWrapper ref={backButtonRef}>
-            <button
-              onClick={() => {
-                onClickClose();
-              }}>
-              <FastRewind
-                className={'animated-svg'}
-                width={'4vw'}
-                height={'4vw'}
-                fill={'#008080'}
-              />
-            </button>
-          </BackButtonWrapper>
-        </Aside>
         <StyledCanvas ref={canvasRef}></StyledCanvas>
       </Wrapper>
     </main>
@@ -229,53 +178,6 @@ const Slideshow: FC = () => {
 };
 
 export default Slideshow;
-
-const Aside = styled.aside`
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 99999;
-	transition: opacity 10s ease-in-out;
-
-	opacity: 0
-	cursor: default;
-	pointer-events: none;
-
-	& .is-open {
-		opacity: 1;
-		cursor: pointer;
-		pointer-events: auto;
-	}
-
-	@keyframes pulse {
-		  0% { fill: #002020; transform: scale(0.8); }
-		 50% { fill: #005050; transform: scale(1.2); }
-		100% { fill: #008080; transform: scale(1.1); }
-	}
-
-	.animated-svg {
-		animation: pulse .8s linear infinite;
-	}
-`;
-
-const BackButtonWrapper = styled.div`
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 4vw;
-  color: #fff;
-  opacity: 0;
-
-  button {
-    position: relative;
-    background: transparent;
-    border: none;
-    &:hover {
-      cursor: pointer;
-      transform: skewY(15deg);
-    }
-  }
-`;
 
 const Wrapper = styled.div`
   position: relative;

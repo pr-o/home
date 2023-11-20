@@ -1,44 +1,43 @@
-const IMAGES_DIR = '/images/about/images';
-const HOVER_IMAGES_DIR = '/images/about/hover-images';
-const SHAPE_IMAGES_DIR = '/images/about/shapes';
+const IMAGES_DIR = '/images/scratchCards';
 
 export const imagePaths = [
-  'lemonade.jpeg',
-  'sk.jpeg',
-  'vr-ar-healthcare.jpeg',
-  'trojan.jpeg',
-  'dropcare.jpeg',
-  'sds-system.jpeg',
-  'matlab.jpeg',
-  'league-of-legends.jpeg',
-  'overwatch.jpeg',
+  '1-1.jpg',
+  '2-1.jpg',
+  '3-1.jpg',
+  '4-1.jpg',
+  '5-1.jpg',
+  '6-1.jpg',
+  '7-1.jpg',
+  '8-1.jpg',
+  '9-1.jpg',
 ].map((path) => `${IMAGES_DIR}/${path}`);
 
 export const hoverImagePaths = [
-  'day1-company.jpeg',
-  'sk-my-suni.jpeg',
-  'cnuh.jpeg',
-  'university-of-california.jpeg',
-  'doctors-fab.jpeg',
-  'mediazen.jpeg',
-  'korea-university.jpeg',
-  'league-of-legends-teams.jpeg',
-  'overwatch-teams.jpeg',
-].map((path) => `${HOVER_IMAGES_DIR}/${path}`);
+  '1-2.jpg',
+  '2-2.jpg',
+  '3-2.jpg',
+  '4-2.jpg',
+  '5-2.jpg',
+  '6-2.jpg',
+  '7-2.jpg',
+  '8-2.jpg',
+  '9-2.jpg',
+].map((path) => `${IMAGES_DIR}/${path}`);
 
 export const fragmentShaderNames = [
+  'trippyShader',
   'shapeShader',
-  'trippyShader',
-  'trippyShader',
+  'waveShader',
+  'gooeyShader',
+  'revealShader',
   'trippyShader',
   'waveShader',
   'gooeyShader',
   'revealShader',
-  'waveShader',
-  'waveShader',
 ];
 
 export const shapeImagePaths = [
+  null,
   'sung-cursive.jpeg',
   null,
   null,
@@ -47,32 +46,4 @@ export const shapeImagePaths = [
   null,
   null,
   null,
-  null,
-  null,
-].map((path) => (path ? `${SHAPE_IMAGES_DIR}/${path}` : null));
-
-export const titles = [
-  'Full Stack Engineer',
-  'AI Research Consultant',
-  'Software Engineer',
-  'Research Assistant',
-  'Software Engineer',
-  'Speech Solutions Researcher',
-  'Instructor (Winter Shool)',
-  'English Tutor',
-  'English Tutor',
-];
-
-export const subtitles = [
-  '@ Lemonade - Day1Company',
-  '@ StepIntoCity + SK AI College',
-  '@ CNUH - Smart Healthcare VR/AR TF',
-  '@ USC',
-  "@ Doctor's Fab",
-  '@ MediaZen',
-  '@ Korea University',
-  'LoL pro teams - 100 Thieves, Optic Gaming, Echo Fox',
-  'Overwatch pro teams - Outlaws, Charge, Shock',
-];
-
-export const texts = ['', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'];
+].map((path) => (path ? `${IMAGES_DIR}/${path}` : null));
