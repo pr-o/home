@@ -24,9 +24,6 @@ import { extend } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useRouter } from 'next/router';
 
-const regular = import('@pmndrs/assets/fonts/inter_regular.woff');
-const medium = import('@pmndrs/assets/fonts/inter_medium.woff');
-
 function Images(props: {
   position: THREE.Vector3;
   scale: number | [number, number];
@@ -137,7 +134,7 @@ export default function App() {
         width: '100%',
         height: '100%',
       }}>
-      <Header color={'transparent'} />
+      <Header />
       <Canvas gl={{ antialias: false }} dpr={[1, 1.5]}>
         <Suspense fallback={null}>
           <ScrollControls

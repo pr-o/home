@@ -9,13 +9,10 @@ import {
   PlaneGeometry,
   ShaderMaterial,
   Mesh,
-  MeshPhongMaterial,
   Vector2,
 } from 'three';
 import Scrollbar from 'smooth-scrollbar';
 import { getRatio } from '@/lib/three';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 export interface OnClickTileDetail {
   target: Slide | null;
@@ -26,7 +23,6 @@ export default class Slide {
   scene: Scene;
   anchorElement: HTMLAnchorElement;
   mainImage: HTMLImageElement;
-  detailsElement: HTMLDivElement;
   images: Array<Texture> = [];
   sizes: any;
   offset: any;
@@ -37,7 +33,7 @@ export default class Slide {
   delta = 0;
   hasClicked = false;
   selected = false;
-  isZoomed: any = false;
+  isZoomed = false;
   loader: any;
   mesh: any;
   uniforms: any;
@@ -47,8 +43,6 @@ export default class Slide {
   isHovering = false;
   detailView = false;
   font: any;
-  titleMesh: any;
-  subtitleMesh: any;
 
   constructor(
     $el: any,
@@ -60,7 +54,6 @@ export default class Slide {
     this.scene = scene;
     this.anchorElement = $el.querySelector('a');
     this.mainImage = $el.querySelector('img');
-    this.detailsElement = $el.querySelector('#details');
 
     this.loader = new TextureLoader();
     this.sizes = new Vector2(0, 0);
@@ -80,6 +73,13 @@ export default class Slide {
   }
 
   bindEvent() {
+    document.addEventListener('onClickTile', (({ detail }: CustomEvent) =>
+      this.zoom(detail)) as EventListener);
+
+    document.addEventListener('onClickClose', () =>
+      this.zoom({ target: null, open: false })
+    );
+
     window.addEventListener('mousemove', (e) => {
       this.onMouseMove(e);
     });
@@ -87,6 +87,9 @@ export default class Slide {
       this.onResize();
     });
 
+    this.anchorElement.addEventListener('click', (e: any) => {
+      this.onClick(e);
+    });
     this.anchorElement.addEventListener('mouseenter', () => {
       this.onMouseEnter();
     });
@@ -94,15 +97,113 @@ export default class Slide {
       this.onMouseLeave();
     });
 
-    this.scrollbar = Scrollbar.get(document.querySelector('#scrollarea') as HTMLElement);
+    this.scrollbar = Scrollbar.get(
+      document.querySelector('#scrollarea') as HTMLElement
+    );
 
     this.scrollbar.addListener((scroll: any) => {
       this.onScroll(scroll);
     });
   }
 
+  onClick(e: any) {
+    e.preventDefault();
+    if (this.hasClicked || !this.mesh) return;
+
+    this.hasClicked = true;
+
+    const data = { target: this, open: true };
+    const ev = new CustomEvent('toggleDetail', { detail: data });
+    document.dispatchEvent(ev);
+  }
+
+  hide(shouldHide: boolean, open: boolean) {
+    const delay = 0.25; // shouldHide && !open ? 0 : 1;
+    const duration = 0.75;
+
+    gsap.to(this.uniforms.u_alpha, {
+      delay,
+      duration,
+      value: shouldHide && !open ? 0 : 1,
+      ease: 'power3.easeIn',
+    });
+
+    gsap.to(this.anchorElement, {
+      delay,
+      duration,
+      alpha: shouldHide && !open ? 0 : 1,
+      force3D: true,
+    });
+  }
+
+  zoom({ target, open }: OnClickTileDetail) {
+    const shouldZoom = target === this;
+
+    const delay = shouldZoom ? 0.4 : 0;
+    const duration = 1.2;
+
+    const newScale = {
+      x: shouldZoom ? this.sizes.x * 1.5 : this.sizes.x,
+      y: shouldZoom ? this.sizes.y * 1.5 : this.sizes.y,
+    };
+
+    const newPosition = {
+      x: shouldZoom ? 0 : this.offset.x,
+      y: shouldZoom ? 0 : this.offset.y,
+    };
+
+    const newRatio = getRatio(newScale, this.images[1].image);
+
+    this.hide(!shouldZoom, !open);
+
+    gsap.to(this.uniforms.u_progressClick, {
+      duration: 1.2,
+      value: shouldZoom ? 1 : 0,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        this.isZoomed = shouldZoom;
+        this.hasClicked = open;
+
+        gsap.to(this.uniforms.u_progressHover, {
+          duration: 1,
+          value: shouldZoom ? 1 : 0,
+          ease: 'power2.inOut',
+        });
+      },
+    });
+
+    gsap.to(this.mesh.scale, {
+      delay,
+      duration,
+      x: newScale.x,
+      y: newScale.y,
+      ease: 'expo.inOut',
+      onUpdate: () => {
+        this.getBounds();
+      },
+    });
+
+    gsap.to(this.mesh.position, {
+      delay,
+      duration,
+      x: newPosition.x,
+      y: newPosition.y,
+      ease: 'expo.inOut',
+    });
+
+    gsap.to(this.uniforms.u_hoverratio.value, {
+      delay,
+      duration,
+      x: 1,
+      y: newRatio.y,
+      ease: 'expo.inOut',
+    });
+  }
+
   onMouseEnter() {
     if (!this.mesh) return;
+
+    if (this.isZoomed || this.hasClicked) return;
 
     gsap.to(this.uniforms.u_progressHover, {
       value: 1,
@@ -115,7 +216,7 @@ export default class Slide {
   }
 
   onMouseLeave() {
-    if (!this.mesh) return;
+    if (!this.mesh || this.isZoomed || this.hasClicked) return;
 
     gsap.to(this.uniforms.u_progressHover, {
       value: 0,
@@ -128,6 +229,8 @@ export default class Slide {
   }
 
   onMouseMove = (event: MouseEvent) => {
+    if (this.isZoomed || this.hasClicked) return;
+
     gsap.to(this.mouse, {
       duration: 0.5,
       x: (event.clientX / window.innerWidth) * 2 - 1,
@@ -200,7 +303,7 @@ export default class Slide {
       u_res: { value: new Vector2(window.innerWidth, window.innerHeight) },
     };
 
-    const geometry = new PlaneGeometry(1, 1);
+    const geometry = new PlaneGeometry(1, 1, 1, 1);
 
     const material = new ShaderMaterial({
       uniforms: this.uniforms,

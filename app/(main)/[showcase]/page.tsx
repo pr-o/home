@@ -1,6 +1,6 @@
 // 'use client';
 
-import { FC } from 'react';
+import React, { FC } from 'react';
 // import Gallery from '@/components/Gallery/Gallery';
 
 import Slideshow from '@/components/Slideshow/SlideShow';
@@ -12,7 +12,7 @@ export default function Page({ params }: { params: { showcase: string } }) {
 }
 
 type Map = {
-  [key: string]: FC;
+  [key: string]: React.ReactNode;
 };
 
 const showcaseMap: Map = {
