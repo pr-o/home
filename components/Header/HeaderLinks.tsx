@@ -17,7 +17,7 @@ const NavComponent = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <Wrapper mobileMenuOpen={mobileMenuOpen}>
+    <Wrapper>
       {!isMobile ? (
         <HeaderLinks />
       ) : (
@@ -25,7 +25,7 @@ const NavComponent = () => {
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <HamburgerMenu onClick={() => setMobileMenuOpen(!mobileMenuOpen)} />
           </button>
-          <NavMenu mobileMenuOpen={mobileMenuOpen}>
+          <NavMenu>
             <HeaderLinks />
           </NavMenu>
         </>
@@ -104,7 +104,7 @@ const Wrapper = styled.div`
 
 const NavMenu = styled.div`
   nav {
-    display: ${({ mobileMenuOpen }) => (mobileMenuOpen ? 'flex' : 'none')};
+    display: flex;
     align-items: center;
     position: absolute;
     top: 100%;
