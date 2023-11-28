@@ -6,22 +6,9 @@ import styled from 'styled-components';
 
 import Nav from 'components/Header/HeaderLinks';
 
-interface Props {
-  color: string;
-  changeColorOnScroll?: {
-    height: number;
-    color: string;
-  };
-}
-
-interface HeaderProps {
-  color?: string;
-  padding?: string;
-}
-
 const BRAND = 'Sung';
 
-const Header = ({ color, changeColorOnScroll }: Props) => {
+const Header = () => {
   return (
     <StyledHeader>
       <Left>

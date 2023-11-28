@@ -16,9 +16,9 @@ const BlackOpsOneFont = localFont({
 });
 
 const TextShuffle: FC = () => {
-  const itemsRef = useRef([]);
-  const placeholderRef = useRef();
-  const descriptionRef = useRef();
+  const itemsRef = useRef<NodeListOf<Element>>();
+  const placeholderRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   const subHeaders = [
     'One is a wanderer.',
@@ -34,27 +34,29 @@ const TextShuffle: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!itemsRef.current || !itemsRef.current.length > 0) return;
+    if (!itemsRef.current || itemsRef.current.length < 1) return;
 
     const items = itemsRef.current;
 
-    function updatePlaceholderText(event, index) {
+    function updatePlaceholderText(event: any, index: number) {
       const newText = event.target.textContent.toUpperCase();
       const itemIndex = index;
       const newDescriptionText = subHeaders[itemIndex].toUpperCase();
 
-      descriptionRef.current.textContent = newDescriptionText;
-      animateScale(placeholderRef.current, 1.125);
+      if (descriptionRef.current) {
+        descriptionRef.current.textContent = newDescriptionText;
+      }
+      placeholderRef.current && animateScale(placeholderRef.current, 1.125);
       shuffleLetters(newText);
     }
 
-    items?.forEach((item) => {
+    items?.forEach((item: any) => {
       item.addEventListener('mouseover', changeColors);
       item.addEventListener('mouseout', revertColors);
     });
 
-    items?.forEach((item, index) => {
-      item.addEventListener('mouseover', (e) =>
+    items?.forEach((item: any, index: number) => {
+      item.addEventListener('mouseover', (e: any) =>
         updatePlaceholderText(e, index)
       );
       item.addEventListener('mouseout', resetPlaceholderText);
@@ -79,7 +81,7 @@ const TextShuffle: FC = () => {
       });
     }
 
-    function animateScale(element, scaleValue) {
+    function animateScale(element: any, scaleValue: number) {
       gsap.fromTo(
         element,
         { scale: 1 },
@@ -87,18 +89,21 @@ const TextShuffle: FC = () => {
       );
     }
 
-    function wrapLetters(text) {
+    function wrapLetters(text: string) {
+      if (!placeholderRef.current) return;
       placeholderRef.current.innerHTML = '';
       [...text].forEach((letter) => {
         const span = document.createElement('span');
         span.style.filter = 'blur(8px)';
         span.style.fontFamily = 'serif';
         span.textContent = letter;
-        placeholderRef.current.appendChild(span);
+        placeholderRef.current && placeholderRef.current.appendChild(span);
       });
     }
 
     function animateBlurEffect() {
+      if (!placeholderRef.current) return;
+
       const letters = placeholderRef.current.children;
       let index = 0;
 
@@ -115,16 +120,16 @@ const TextShuffle: FC = () => {
       setTimeout(clearNextLetter, 0);
     }
 
-    function shuffleLetters(finalText) {
+    function shuffleLetters(finalText: string) {
       wrapLetters('');
       wrapLetters(finalText.replace(/./g, ' '));
 
       const textArray = finalText.split('');
       let shufflingCounter = 0;
-      const intervalHandles = [];
+      const intervalHandles: any[] = [];
 
-      function shuffle(index) {
-        if (!placeholderRef.current.children[index]) return; // 필요한가?
+      function shuffle(index: number) {
+        if (!placeholderRef.current?.children[index]) return; // 필요한가?
 
         if (shufflingCounter < 30) {
           textArray[index] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[
@@ -145,7 +150,7 @@ const TextShuffle: FC = () => {
       setTimeout(() => {
         shufflingCounter = 30;
         for (let i = 0; i < finalText.length; i++) {
-          if (!placeholderRef.current.children[i]) return; // 필요한가?
+          if (!placeholderRef.current?.children[i]) return; // 필요한가?
 
           placeholderRef.current.children[i].textContent = finalText.charAt(i);
           clearInterval(intervalHandles[i]);
@@ -155,20 +160,22 @@ const TextShuffle: FC = () => {
     }
 
     function resetPlaceholderText() {
-      descriptionRef.current.textContent = defaultDescription;
+      if (descriptionRef.current) {
+        descriptionRef.current.textContent = defaultDescription;
+      }
       animateScale(placeholderRef.current, 1.25);
       shuffleLetters(defaultTitle);
     }
 
     // clean-ups
     return () => {
-      items?.forEach((item) => {
+      items?.forEach((item: any) => {
         item.removeEventListener('mouseover', changeColors);
         item.removeEventListener('mouseout', revertColors);
       });
 
-      items?.forEach((item, index) => {
-        item.removeEventListener('mouseover', (e) =>
+      items?.forEach((item: any, index: number) => {
+        item.removeEventListener('mouseover', (e: any) =>
           updatePlaceholderText(e, index)
         );
         item.removeEventListener('mouseout', resetPlaceholderText);

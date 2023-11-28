@@ -1,4 +1,4 @@
-import Transition from '@/app/transition';
+// import Transition from '@/app/transition';
 
 const CheckPage = () => {
   return (

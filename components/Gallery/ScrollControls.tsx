@@ -3,7 +3,11 @@
 import * as THREE from 'three';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { context as fiberContext, useFrame, useThree } from '@react-three/fiber';
+import {
+  context as fiberContext,
+  useFrame,
+  useThree,
+} from '@react-three/fiber';
 import { mergeRefs } from 'react-merge-refs';
 
 export type ScrollControlsProps = {
@@ -118,17 +122,12 @@ export function ScrollControls({
     // Init scroll one pixel in to allow upward/leftward scroll
     el[horizontal ? 'scrollLeft' : 'scrollTop'] = 1;
 
-    const oldTarget = typeof events.connected !== 'boolean' ? events.connected : gl.domElement;
+    const oldTarget =
+      typeof events.connected !== 'boolean' ? events.connected : gl.domElement;
     requestAnimationFrame(() => events.connect?.(el));
-    const oldCompute = raycaster.computeOffsets;
-    raycaster.computeOffsets = ({ clientX, clientY }) => ({
-      offsetX: clientX - (target as HTMLElement).offsetLeft,
-      offsetY: clientY - (target as HTMLElement).offsetTop,
-    });
 
     return () => {
       target.removeChild(el);
-      raycaster.computeOffsets = oldCompute;
       if (events && oldTarget) {
         events.connect?.(oldTarget);
       }
@@ -144,7 +143,7 @@ export function ScrollControls({
     let disableScroll = true;
     let firstRun = true;
 
-    const onScroll = (e) => {
+    const onScroll = (e: any) => {
       // Prevent first scroll because it is indirectly caused by the one pixel offset
       if (!enabled || firstRun) return;
       invalidate();
@@ -173,7 +172,7 @@ export function ScrollControls({
     el.addEventListener('scroll', onScroll, { passive: true });
     requestAnimationFrame(() => (firstRun = false));
 
-    const onWheel = (e) => (el.scrollLeft += e.deltaY / 2);
+    const onWheel = (e: any) => (el.scrollLeft += e.deltaY / 2);
     if (horizontal) el.addEventListener('wheel', onWheel, { passive: true });
 
     return () => {
@@ -184,25 +183,41 @@ export function ScrollControls({
 
   let last = 0;
   useFrame((_, delta) => {
-    state.offset = THREE.MathUtils.damp((last = state.offset), scroll.current, damping, delta);
-    state.delta = THREE.MathUtils.damp(state.delta, Math.abs(last - state.offset), damping, delta);
+    state.offset = THREE.MathUtils.damp(
+      (last = state.offset),
+      scroll.current,
+      damping,
+      delta
+    );
+    state.delta = THREE.MathUtils.damp(
+      state.delta,
+      Math.abs(last - state.offset),
+      damping,
+      delta
+    );
     if (state.delta > eps) invalidate();
   });
   return <context.Provider value={state}>{children}</context.Provider>;
 }
 
-const ScrollCanvas = React.forwardRef(({ children }, ref) => {
-  const group = React.useRef<THREE.Group>(null!);
-  const state = useScroll();
-  const { width, height } = useThree((state) => state.viewport);
-  useFrame(() => {
-    group.current.position.x = state.horizontal ? -width * (state.pages - 1) * state.offset : 0;
-    group.current.position.y = state.horizontal ? 0 : height * (state.pages - 1) * state.offset;
-  });
+const ScrollCanvas = React.forwardRef(
+  ({ children }: { children?: React.ReactNode }, ref) => {
+    const group = React.useRef<THREE.Group>(null!);
+    const state = useScroll();
+    const { width, height } = useThree((state) => state.viewport);
+    useFrame(() => {
+      group.current.position.x = state.horizontal
+        ? -width * (state.pages - 1) * state.offset
+        : 0;
+      group.current.position.y = state.horizontal
+        ? 0
+        : height * (state.pages - 1) * state.offset;
+    });
 
-  ScrollCanvas.displayName = 'scrollCanvas';
-  return <group ref={mergeRefs([ref, group])}>{children}</group>;
-});
+    ScrollCanvas.displayName = 'scrollCanvas';
+    return <group ref={mergeRefs([ref, group])}>{children}</group>;
+  }
+);
 
 const ScrollHtml = React.forwardRef(
   (
@@ -221,7 +236,9 @@ const ScrollHtml = React.forwardRef(
       if (state.delta > state.eps) {
         group.current.style.transform = `translate3d(${
           state.horizontal ? -width * (state.pages - 1) * state.offset : 0
-        }px,${state.horizontal ? 0 : height * (state.pages - 1) * -state.offset}px,0)`;
+        }px,${
+          state.horizontal ? 0 : height * (state.pages - 1) * -state.offset
+        }px,0)`;
       }
     });
 
@@ -239,7 +256,9 @@ const ScrollHtml = React.forwardRef(
         }}
         {...props}>
         <context.Provider value={state}>
-          <fiberContext.Provider value={fiberState}>{children}</fiberContext.Provider>
+          <fiberContext.Provider value={fiberState}>
+            {children}
+          </fiberContext.Provider>
         </context.Provider>
       </div>,
       state.fixed
@@ -253,8 +272,10 @@ type ScrollProps = {
   children?: React.ReactNode;
 };
 
-export const Scroll = React.forwardRef(({ html, ...props }: ScrollProps, ref) => {
-  const El = html ? ScrollHtml : ScrollCanvas;
-  Scroll.displayName = 'Scroll';
-  return <El ref={ref} {...props} />;
-});
+export const Scroll = React.forwardRef(
+  ({ html, ...props }: ScrollProps, ref) => {
+    const El = html ? ScrollHtml : ScrollCanvas;
+    Scroll.displayName = 'Scroll';
+    return <El ref={ref} {...props} />;
+  }
+);
