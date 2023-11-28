@@ -21,8 +21,6 @@ import { suspend } from 'suspend-react';
 import Header from '@/components/Header/Header';
 import Link from 'next/link';
 import { extend } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
-import { useRouter } from 'next/router';
 
 function Images(props: {
   position: THREE.Vector3;
@@ -171,17 +169,17 @@ const frameInfo = [
   },
   {
     id: '02',
-    title: 'title 3',
+    title: 'Next Conf Ticket',
     description: 'description',
-    url: '/images/gallery/img3.jpg',
-    pageUrl: '/scratch-card',
+    url: '/images/showcase/next-conf-ticket-clone.png',
+    pageUrl: '/next-conf-ticket',
   },
   {
     id: '03',
     title: 'title 4',
     description: 'description',
     url: '/images/gallery/img4.jpg',
-    pageUrl: '/scratch-card',
+    pageUrl: '/confetti',
   },
   {
     id: '04',
