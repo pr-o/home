@@ -5,6 +5,8 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import HamburgerMenu from '@/assets/icons/HamburgerMenu';
 import useCheckMobile from '@/hooks/useCheckMobile';
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import { useTheme } from 'next-themes';
 
 type Props = {
   isMobile: boolean;
@@ -35,38 +37,22 @@ const NavComponent = () => {
 };
 
 const HeaderLinks = () => {
+  const { resolvedTheme, setTheme } = useTheme();
+
   return (
     <nav>
       <ul>
         <li>
-          <Menu href="/" passHref>
-            home
-          </Menu>
-        </li>
-        <li>
-          <Menu href="/check" passHref>
-            check
-          </Menu>
-        </li>
-        <li>
-          <Menu href="/about" passHref>
-            about
-          </Menu>
-        </li>
-        <li>
-          <Menu href="/" passHref>
-            1
-          </Menu>
-        </li>
-        <li>
-          <Menu href="/" passHref>
-            {/* <ViewCarouselIcon /> */}2
-          </Menu>
-        </li>
-        <li>
-          <Menu href="/" passHref>
-            3
-          </Menu>
+          <Button
+            onClick={() =>
+              setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
+            }>
+            {resolvedTheme === 'light' ? (
+              <MoonIcon width="28px" height="28px" />
+            ) : (
+              <SunIcon width="28px" height="28px" />
+            )}
+          </Button>
         </li>
       </ul>
     </nav>
@@ -75,7 +61,7 @@ const HeaderLinks = () => {
 
 export default NavComponent;
 
-const Menu = styled(Link)`
+const Button = styled.button`
   display: flex;
   align-items: center;
   height: 2rem;
@@ -83,8 +69,10 @@ const Menu = styled(Link)`
   font-size: 0.875rem;
   cursor: pointer;
 
-  & > svg {
+  & svg {
     margin-left: 0.375rem;
+    width: 28px;
+    height: 28px;
   }
 `;
 
@@ -120,6 +108,7 @@ const NavMenu = styled.div`
       background-color: #eee;
       display: flex;
       justify-content: center;
+      align-items: center;
       padding: 0.25rem 0.5rem;
     }
   }
