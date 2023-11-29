@@ -1,12 +1,10 @@
-// 'use client';
-
 import React, { FC } from 'react';
-// import Gallery from '@/components/Gallery/Gallery';
 
 import Slideshow from '@/components/Slideshow/SlideShow';
 import TextShuffle from '@/components/TextShuffle/TextShuffle';
 import NextConfTicket from '@/components/NextConfTicket/NextConfTicket';
 import ParticlesBlob from '@/components/ParticlesBlob/ParticlesBlob';
+import Expose from '@/components/Expose/Expose';
 
 export default function Page({ params }: { params: { showcase: string } }) {
   console.log('params =>', params);
@@ -22,4 +20,5 @@ const showcaseMap: Map = {
   'text-shuffle': <TextShuffle />,
   'next-conf-ticket': <NextConfTicket />,
   'particles-blob': <ParticlesBlob />,
+  expose: <Expose />,
 };

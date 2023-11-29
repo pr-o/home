@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, FC } from 'react';
 import { gsap } from 'gsap';
 import localFont from 'next/font/local';
+import HomeButton from '@/components/HomeButton/HomeButton';
 
 const defaultBackgroundColor = '#008080';
 const defaultTitle = 'sung';
@@ -274,6 +275,7 @@ const TextShuffle: FC = () => {
           </p>
         </div>
       </div>
+      <HomeButton size="24px" />
     </main>
   );
 };
