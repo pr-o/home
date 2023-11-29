@@ -13,6 +13,7 @@ const NextConfTicket: FC = () => {
   const ticketRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!ticketRef.current) return;
     const { x, y, width, height } = ticketRef.current.getBoundingClientRect();
     const centerPoint = { x: x + width / 2, y: y + height / 2 };
 
@@ -63,7 +64,7 @@ const NextConfTicket: FC = () => {
               </div>
             </div>
             <div className="ticket-event">
-              <img src={eventLogosPath} />
+              <img src={eventLogosPath} alt="event-logo" />
             </div>
           </div>
           <div className="ticket-visual_ticket-number-wrapper">

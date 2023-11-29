@@ -1,37 +1,20 @@
 'use client';
 
 import * as THREE from 'three';
-import React, {
-  Suspense,
-  useRef,
-  useState,
-  useEffect,
-  MutableRefObject,
-} from 'react';
+import React, { Suspense, useRef, useState, MutableRefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import {
-  Preload,
-  Image as ImageImpl,
-  Text,
-  useCursor,
-} from '@react-three/drei';
+import { Preload, Image as ImageImpl, useCursor } from '@react-three/drei';
 import { ScrollControls, Scroll, useScroll } from './ScrollControls';
 import { ImageMaterialType } from '@/types/three';
-import { suspend } from 'suspend-react';
 import Header from '@/components/Header/Header';
-import Link from 'next/link';
-import { extend } from '@react-three/fiber';
 
 function Images(props: {
   position: THREE.Vector3;
   scale: number | [number, number];
-  index: number;
-  title: string;
-  description: string;
   pageUrl: string;
   url: string;
 }) {
-  const { position, index, title, description, pageUrl, url } = props;
+  const { position, pageUrl, url } = props;
   const ref =
     useRef<
       THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>
@@ -96,25 +79,22 @@ function Pages({
 }) {
   const { width, height } = useThree((state) => state.viewport);
 
-  console.log('w h', width, height);
+  const ratio = width / height;
 
   const w = width < 10 ? 0.45 : 0.4;
   const gap = w * 0.9;
-  extend({ Link });
 
   return (
     <>
       {info.map(({ id, title, description, pageUrl, url }, index) => (
-        <Images
-          position={new THREE.Vector3(index * width * gap - 0.25, 0, 0)}
-          scale={[width * w - 0.8, 4]}
-          index={index}
-          title={title}
-          description={description}
-          pageUrl={pageUrl}
-          url={url}
-          key={`${index}-${url}`}
-        />
+        <div key={`${index}-${url}`}>
+          <Images
+            position={new THREE.Vector3(index * ratio * 9 * gap - 0.25, 0, 0)}
+            scale={[ratio * 3, ratio * 2]}
+            pageUrl={pageUrl}
+            url={url}
+          />
+        </div>
       ))}
     </>
   );
@@ -176,17 +156,17 @@ const frameInfo = [
   },
   {
     id: '03',
-    title: 'title 4',
+    title: 'Particles Blob',
     description: 'description',
-    url: '/images/gallery/img4.jpg',
-    pageUrl: '/confetti',
+    url: '/images/showcase/particles-blob.png',
+    pageUrl: '/particles-blob',
   },
   {
     id: '04',
-    title: 'title 5',
+    title: 'Particles Blob',
     description: 'description',
     url: '/images/gallery/img5.jpg',
-    pageUrl: '/scratch-card',
+    pageUrl: '/particles-blob',
   },
   {
     id: '05',

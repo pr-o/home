@@ -48,7 +48,7 @@ export function ScrollControls({
   infinite,
   horizontal,
   pages = 1,
-  distance = 1,
+  distance = 2,
   damping = 4,
   children,
 }: ScrollControlsProps) {

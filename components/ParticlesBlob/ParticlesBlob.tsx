@@ -1,22 +1,36 @@
 'use client';
 
+import React, { useMemo, useRef } from 'react';
 import { OrbitControls, useFBO } from '@react-three/drei';
 import { Canvas, useFrame, extend, createPortal } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useControls } from 'leva';
 
 import SimulationMaterial from './simulationMaterial';
 
 import vertexShader from './vertexShader';
 import fragmentShader from './fragmentShader';
+import HomeButton from '@/components/HomeButton/HomeButton';
 
-extend({ SimulationMaterial: SimulationMaterial });
+extend({ SimulationMaterial });
 
 const FBOParticles = () => {
-  const size = 128;
+  const levaOptions = useMemo(() => {
+    return {
+      size: {
+        value: 128,
+        min: 8,
+        max: 256,
+        step: 4,
+      },
+    };
+  }, []);
 
-  const points = useRef();
-  const simulationMaterialRef = useRef();
+  // const size = 128;
+  const { size } = useControls(levaOptions);
+
+  const points = useRef(null);
+  const simulationMaterialRef = useRef(null);
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(
@@ -68,9 +82,13 @@ const FBOParticles = () => {
     gl.render(scene, camera);
     gl.setRenderTarget(null);
 
-    points.current.material.uniforms.uPositions.value = renderTarget.texture;
+    if (!points.current) return;
+    (points.current as any).material.uniforms.uPositions.value =
+      renderTarget.texture;
 
-    simulationMaterialRef.current.uniforms.uTime.value = clock.elapsedTime;
+    if (!simulationMaterialRef.current) return;
+    (simulationMaterialRef.current as any).uniforms.uTime.value =
+      clock.elapsedTime;
   });
 
   return (
@@ -117,12 +135,25 @@ const FBOParticles = () => {
 };
 
 const Scene = () => {
+  const levaOptions = useMemo(() => {
+    return {
+      backgroundColor: {
+        value: '#000000',
+      },
+    };
+  }, []);
+  const { backgroundColor } = useControls(levaOptions);
+
   return (
-    <Canvas camera={{ position: [1.5, 1.5, 2.5] }}>
-      <ambientLight intensity={0.5} />
-      <FBOParticles />
-      <OrbitControls />
-    </Canvas>
+    <>
+      <Canvas camera={{ position: [1.5, 1.5, 2.5] }}>
+        <color args={[backgroundColor]} attach="background" />
+        <ambientLight intensity={0.5} />
+        <FBOParticles />
+        <OrbitControls />
+      </Canvas>
+      <HomeButton size={'24px'} />
+    </>
   );
 };
 
