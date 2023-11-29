@@ -6,8 +6,6 @@ module.exports = (phase, { defaultConfig }) => {
   const nextConfig = {
     reactStrictMode: false,
     swcMinify: true,
-    experimental: { appDir: true },
-    compiler: { styledComponent: true },
     transpilePackages: ['three'],
   };
 
