@@ -21,7 +21,7 @@ export interface OnClickTileDetail {
 
 export default class Slide {
   scene: Scene;
-  anchorElement: HTMLAnchorElement;
+  pictureElement: HTMLPictureElement;
   mainImage: HTMLImageElement;
   images: Array<Texture> = [];
   sizes: any;
@@ -52,7 +52,7 @@ export default class Slide {
     vertexShader: string
   ) {
     this.scene = scene;
-    this.anchorElement = $el.querySelector('a');
+    this.pictureElement = $el.querySelector('figure');
     this.mainImage = $el.querySelector('img');
 
     this.loader = new TextureLoader();
@@ -87,13 +87,13 @@ export default class Slide {
       this.onResize();
     });
 
-    this.anchorElement.addEventListener('click', (e: any) => {
+    this.pictureElement.addEventListener('click', (e: any) => {
       this.onClick(e);
     });
-    this.anchorElement.addEventListener('mouseenter', () => {
+    this.pictureElement.addEventListener('mouseenter', () => {
       this.onMouseEnter();
     });
-    this.anchorElement.addEventListener('mouseleave', () => {
+    this.pictureElement.addEventListener('mouseleave', () => {
       this.onMouseLeave();
     });
 
@@ -128,7 +128,7 @@ export default class Slide {
       ease: 'power3.easeIn',
     });
 
-    gsap.to(this.anchorElement, {
+    gsap.to(this.pictureElement, {
       delay,
       duration,
       alpha: shouldHide && !open ? 0 : 1,

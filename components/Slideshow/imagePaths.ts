@@ -26,9 +26,11 @@ export const hoverImagePaths = [
 
 export const fragmentShaderNames = [
   'trippyShader',
+  'gooeyShader',
+
   'shapeShader',
   'waveShader',
-  'gooeyShader',
+
   'revealShader',
   'trippyShader',
   'waveShader',
@@ -38,8 +40,8 @@ export const fragmentShaderNames = [
 
 export const shapeImagePaths = [
   null,
-  'sung-cursive.jpeg',
   null,
+  'sung-cursive.jpeg',
   null,
   null,
   null,
