@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import React, { Suspense, useRef, useState, MutableRefObject } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import { Preload, Image as ImageImpl, useCursor } from '@react-three/drei';
 import { ScrollControls, Scroll, useScroll } from './ScrollControls';
 import { ImageMaterialType } from '@/types/three';
@@ -80,7 +80,6 @@ function Pages({
 
   const w = width < 10 ? 0.45 : 0.4;
   const gap = w * 0.9;
-
   return (
     <>
       {info.map(({ id, title, description, pageUrl, url }, index) => (
@@ -158,16 +157,9 @@ const frameInfo = [
   },
   {
     id: '04',
-    title: 'Particles Blob',
+    title: 'Exposé',
     description: 'description',
-    url: '/images/gallery/img5.jpg',
-    pageUrl: '/particles-blob',
-  },
-  {
-    id: '05',
-    title: 'title 6',
-    description: 'description',
-    url: '/images/gallery/img6.jpg',
-    pageUrl: '/scratch-card',
+    url: '/images/showcase/expose.png',
+    pageUrl: '/expose',
   },
 ];
