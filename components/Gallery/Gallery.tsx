@@ -50,9 +50,6 @@ function Images(props: {
           ));
   });
 
-  const { x, y } = position;
-  const w = width < 10 ? 0.55 : 0.895;
-
   return (
     <group ref={group}>
       <ImageImpl
@@ -87,14 +84,12 @@ function Pages({
   return (
     <>
       {info.map(({ id, title, description, pageUrl, url }, index) => (
-        <div key={`${index}-${url}`}>
-          <Images
-            position={new THREE.Vector3(index * ratio * 9 * gap - 0.25, 0, 0)}
-            scale={[ratio * 3, ratio * 2]}
-            pageUrl={pageUrl}
-            url={url}
-          />
-        </div>
+        <Images
+          position={new THREE.Vector3(index * ratio * 9 * gap - 0.25, 0, 0)}
+          scale={[ratio * 3, ratio * 2]}
+          pageUrl={pageUrl}
+          url={url}
+        />
       ))}
     </>
   );
