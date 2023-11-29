@@ -18,7 +18,8 @@
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
     "react/react-in-jsx-scope": "off",
     "no-undef": "off",
-    "react/no-unknown-property": "off"
+    "react/no-unknown-property": "off",
+    "@next/next/no-html-link-for-pages": "off"
   },
   "plugins": [
     "@typescript-eslint",
@@ -35,6 +36,7 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@next/next/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "next/core-web-vitals"
   ]
 }
