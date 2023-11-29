@@ -15,7 +15,7 @@ module.exports = (phase, { defaultConfig }) => {
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
       config.module.rules.push({
         test: /\.(glsl)$/,
-        use: ['glslify-import-loader', 'raw-loader', 'glslify-loader'],
+        type: 'asset/source',
       });
 
       return config;
@@ -24,13 +24,13 @@ module.exports = (phase, { defaultConfig }) => {
 
   if (phase === PHASE_DEVELOPMENT_SERVER) {
     return {
-      ...webpackConfig,
       ...nextConfig,
+      ...webpackConfig,
     };
   }
 
   return {
-    ...webpackConfig,
     ...nextConfig,
+    ...webpackConfig,
   };
 };

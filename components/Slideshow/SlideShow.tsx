@@ -16,12 +16,12 @@ import {
   AmbientLight,
   WebGLRenderer,
 } from 'three';
-import vertexShader from '@/lib/glsl/vertexShader.glsl';
-import shapeShader from '@/lib/glsl/shapeShader.glsl';
-import trippyShader from '@/lib/glsl/trippyShader.glsl';
-import waveShader from '@/lib/glsl/waveShader.glsl';
-import revealShader from '@/lib/glsl/revealShader.glsl';
-import gooeyShader from '@/lib/glsl/gooeyShader.glsl';
+import vertexShader from './vertexShader';
+import shapeShader from './shapeShader';
+import trippyShader from './trippyShader';
+import waveShader from './waveShader';
+import revealShader from './revealShader';
+import gooeyShader from './gooeyShader';
 import HorizontalScrollPlugin from '@/lib/HorizontalScrollPlugin';
 import Scrollbar from 'smooth-scrollbar';
 import {
@@ -30,11 +30,11 @@ import {
   fragmentShaderNames,
   shapeImagePaths,
 } from 'components/Slideshow/imagePaths';
+import HomeButton from '@/components/HomeButton/HomeButton';
 
 import Slide, { OnClickTileDetail } from '@/components/Slideshow/Slide';
 import FastRewind from '@/assets/FastRewind';
-import { HomeIcon } from '@radix-ui/react-icons';
-import { useRouter } from 'next/navigation';
+import { AnimatePresence } from 'framer-motion';
 
 const blankSVG = `data:image/svg+xml;charset=utf8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E`;
 
@@ -47,9 +47,8 @@ const Slideshow: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const sceneRef = useRef<Scene | null>(null);
   const scrollbarRef = useRef<Scrollbar | null | undefined>(null);
-  const backButtonRef = useRef<HTMLDivElement | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const [showBackButton, setShowBackButton] = useState(false);
 
   const onScroll = ({
     offset,
@@ -98,12 +97,7 @@ const Slideshow: FC = () => {
       events: lock ? false : [/wheel/],
     });
 
-    setTimeout(() => {
-      (backButtonRef?.current as HTMLDivElement)?.classList?.toggle(
-        'is-open',
-        lock
-      );
-    }, 1650);
+    setShowBackButton(!showBackButton);
   };
 
   const onClickClose = () => {
@@ -133,9 +127,7 @@ const Slideshow: FC = () => {
       document.querySelector('#scrollarea') as HTMLElement
     );
 
-    window.addEventListener('resize', () => {
-      onResize();
-    });
+    window.addEventListener('resize', onResize);
     document.addEventListener('toggleDetail', (({ detail }: CustomEvent) =>
       onToggleView(detail)) as EventListener);
 
@@ -188,13 +180,13 @@ const Slideshow: FC = () => {
     sceneRef.current.add(camera);
     sceneRef.current.add(light);
 
-    const onResize = () => {
+    function onResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
 
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
-    };
+    }
 
     const update = () => {
       requestAnimationFrame(update);
@@ -208,6 +200,9 @@ const Slideshow: FC = () => {
 
     return () => {
       Scrollbar.destroyAll();
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('toggleDetail', (({ detail }: CustomEvent) =>
+        onToggleView(detail)) as EventListener);
     };
   }, []);
 
@@ -225,36 +220,38 @@ const Slideshow: FC = () => {
                 <SlideShowEl className={`slide`} key={`frame-${i}`}>
                   <article>
                     <figure>
-                      <img src={blankSVG} alt="" />
+                      <picture>
+                        <StyledImage src={blankSVG} alt={`image-${i}`} />
+                      </picture>
                     </figure>
                   </article>
                 </SlideShowEl>
               ))}
             </SlideShowList>
           </ScrollArea>
-          <SlideshowProgressWrapper id="progress-wrapper">
-            <SlideshowProgress ref={progressRef} progress={progress ?? 0} />
-          </SlideshowProgressWrapper>
+          <ProgressWrapper id="progress-wrapper">
+            <Progress ref={progressRef} progress={progress ?? 0} />
+          </ProgressWrapper>
         </ScrollAreaCtn>
-        <HomeButtonWrapper>
-          <button onClick={() => router.push('/')}>
-            <HomeIcon width="32px" height="32px" />
-          </button>
-        </HomeButtonWrapper>
+        <HomeButton size={'24px'} />
         <Aside>
-          <BackButtonWrapper ref={backButtonRef}>
-            <button
-              onClick={() => {
-                onClickClose();
-              }}>
-              <FastRewind
-                className={'animated-svg'}
-                width={'4vw'}
-                height={'4vw'}
-                fill={'#008080'}
-              />
-            </button>
-          </BackButtonWrapper>
+          <AnimatePresence>
+            {showBackButton ? (
+              <BackButtonWrapper>
+                <button
+                  onClick={() => {
+                    onClickClose();
+                  }}>
+                  <FastRewind
+                    className={'animated-svg'}
+                    width={'3vw'}
+                    height={'3vw'}
+                    fill={'#008080'}
+                  />
+                </button>
+              </BackButtonWrapper>
+            ) : null}
+          </AnimatePresence>
         </Aside>
         <StyledCanvas ref={canvasRef}></StyledCanvas>
       </Wrapper>
@@ -289,10 +286,8 @@ const BackButtonWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 2rem;
-  color: #fff;
-  opacity: 0;
 
-  button {
+  & > button {
     position: relative;
     background: transparent;
     border: none;
@@ -301,35 +296,33 @@ const BackButtonWrapper = styled.div`
       transform: skewY(12deg);
     }
   }
+
+  @keyframes pulse {
+    0% {
+      fill: #002020;
+      transform: scale(0.8);
+    }
+    50% {
+      fill: #005050;
+      transform: scale(1.2);
+    }
+    100% {
+      fill: #008080;
+      transform: scale(1.1);
+    }
+  }
+
+  .animated-svg {
+    animation: pulse 1s linear infinite;
+  }
 `;
 
 const Aside = styled.aside`
-	position: absolute;
-	bottom: 0;
-	left: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
-	z-index: 9999;
-	transition: opacity 10s ease-in-out;
-
-	opacity: 0
-	cursor: default;
-	pointer-events: none;
-
-	& .is-open {
-		opacity: 1;
-		cursor: pointer;
-		pointer-events: auto;
-	}
-
-	@keyframes pulse {
-		  0% { fill: #002020; transform: scale(0.8); }
-		 50% { fill: #005050; transform: scale(1.2); }
-		100% { fill: #008080; transform: scale(1.1); }
-	}
-
-	.animated-svg {
-		animation: pulse 1s linear infinite;
-	}
+  z-index: 9999;
 `;
 
 const Wrapper = styled.div`
@@ -393,18 +386,25 @@ const SlideShowEl = styled.li`
   }
 `;
 
-const SlideshowProgressWrapper = styled.div`
+const StyledImage = styled.img`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ProgressWrapper = styled.div`
   overflow: hidden;
   position: fixed;
   bottom: 2.5%;
-  left: calc(50% - 6.5rem);
+  left: calc(50% - 5rem);
   width: 10rem;
   height: 0.5rem;
   background-color: #ffffff80;
   border-radius: 0.4rem;
+  user-select: none;
 `;
 
-const SlideshowProgress = styled.span<{ progress: number }>`
+const Progress = styled.span<{ progress: number }>`
   position: absolute;
   top: 0;
   left: -0.5rem;

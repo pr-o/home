@@ -17,9 +17,16 @@
   "rules": {
     "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
     "react/react-in-jsx-scope": "off",
-    "no-undef": "off"
+    "no-undef": "off",
+    "react/no-unknown-property": "off"
   },
-  "plugins": ["@typescript-eslint", "react", "react-hooks", "import", "prettier"],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "import",
+    "prettier"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
