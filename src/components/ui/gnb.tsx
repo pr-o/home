@@ -68,14 +68,14 @@ export function GNB() {
   ];
 
   const linkedInLogo = (
-    <a target="_blank" href={links.github} rel="noopener noreferrer">
+    <a target="_blank" href={links.linkedIn} rel="noopener noreferrer">
       <div className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#ccc] bg-gray-100 text-gray-300 rounded-full hover:border-white/50 hover:text-white transition-colors duration-200 w-full sm:w-auto">
         <LinkedInLogo className="w-6 h-6" />
       </div>
     </a>
   );
 
-  const signupButtonElement = (
+  const gitHubLogo = (
     <div className="relative group w-full sm:w-auto">
       <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-gray-100 opacity-40 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-60 group-hover:blur-xl group-hover:-m-3"></div>
       <a target="_blank" href={links.github} rel="noopener noreferrer">
@@ -103,7 +103,7 @@ export function GNB() {
         </nav>
         <div className="hidden sm:flex items-center gap-2 sm:gap-3">
           {linkedInLogo}
-          {signupButtonElement}
+          {gitHubLogo}
         </div>
         <button
           className="sm:hidden flex items-center justify-center w-8 h-8 text-gray-300 focus:outline-none"
@@ -131,7 +131,7 @@ export function GNB() {
         </nav>
         <div className="flex flex-col items-center space-y-4 mt-4 w-full">
           {linkedInLogo}
-          {signupButtonElement}
+          {gitHubLogo}
         </div>
       </div>
     </header>
