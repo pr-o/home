@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export const GitHubLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
@@ -16,8 +16,8 @@ export const GitHubLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGE
         fill="#24292f"
       />
     </svg>
-  )
+  ),
 );
 
-GitHubLogo.displayName = "GitHubLogo";
+GitHubLogo.displayName = 'GitHubLogo';
 export default GitHubLogo;

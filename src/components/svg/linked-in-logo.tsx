@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export const LinkedInLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>(
   ({ className, ...props }, ref) => (
@@ -11,7 +11,7 @@ export const LinkedInLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSV
       {...props}
     >
       <path
-        style={{ fill: "#0077B7" }}
+        style={{ fill: '#0077B7' }}
         d="M347.445,0H34.555C15.471,0,0,15.471,0,34.555v312.889C0,366.529,15.471,382,34.555,382h312.889
         C366.529,382,382,366.529,382,347.444V34.555C382,15.471,366.529,0,347.445,0z M118.207,329.844c0,5.554-4.502,10.056-10.056,10.056
         H65.345c-5.554,0-10.056-4.502-10.056-10.056V150.403c0-5.554,4.502-10.056,10.056-10.056h42.806
@@ -23,7 +23,7 @@ export const LinkedInLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSV
         L341.91,330.654L341.91,330.654z"
       />
     </svg>
-  )
+  ),
 );
 
-LinkedInLogo.displayName = "LinkedInLogo";
+LinkedInLogo.displayName = 'LinkedInLogo';
