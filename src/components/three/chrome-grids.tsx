@@ -1,7 +1,6 @@
 'use client';
 
-import { Loader, useProgress } from '@react-three/drei';
-import { CameraShake, OrbitControls } from '@react-three/drei';
+import { CameraShake } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { ExtrudeGeometry, Shape } from 'three';
@@ -196,9 +195,6 @@ function GridOfBoxes() {
 }
 
 export function ChromeGrids() {
-  const { progress } = useProgress();
-
-  console.log('progress', progress);
   return (
     <div className="relative z-0 h-full w-full bg-black">
       <Canvas
@@ -211,8 +207,8 @@ export function ChromeGrids() {
         <Suspense fallback={null}>
           <ambientLight intensity={1} />
           <directionalLight position={[10, 15, 10]} intensity={10} castShadow />
-          <directionalLight position={[-10, 10, -5]} intensity={10} color="#ffffff" />
-          <directionalLight position={[5, -10, 15]} intensity={4} color="#f0f8ff" />
+          <directionalLight position={[-10, 10, -5]} intensity={8} color="#ffffff" />
+          <directionalLight position={[5, -10, 15]} intensity={4} color="#008080" />
           <pointLight position={[0, 20, 3]} intensity={2} distance={50} />
           <pointLight position={[15, 5, 15]} intensity={1.2} distance={30} color="#ffffff" />
           <GridOfBoxes />
@@ -226,7 +222,6 @@ export function ChromeGrids() {
           />
         </Suspense>
       </Canvas>
-      <Loader />
     </div>
   );
 }
