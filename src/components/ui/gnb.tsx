@@ -1,30 +1,89 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { RocketIcon, MenuIcon, XIcon } from 'lucide-react';
-import { LinkedInLogo } from '@/components/svg/linked-in-logo';
+import { HouseIcon, MenuIcon, XIcon } from 'lucide-react';
+import { useTransitionRouter } from 'next-view-transitions';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { GitHubLogo } from '@/components/svg/github-logo';
+import { LinkedInLogo } from '@/components/svg/linked-in-logo';
 import { links } from '@/lib/constants';
 
 const AnimatedNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+  const router = useTransitionRouter();
+  const pathname = usePathname();
+
   const defaultTextColor = 'text-gray-200 font-semibold';
   const hoverTextColor = 'text-white font-bold';
   const textSizeClass = 'text-sm';
 
   return (
-    <a
+    <Link
       href={href}
+      onClick={(e) => {
+        e.preventDefault();
+        if (pathname === href) {
+          return;
+        }
+        router.push(href, {
+          onTransitionReady: () => pageAnimation(),
+        });
+      }}
       className={`group relative flex inline-block h-5 items-center overflow-hidden ${textSizeClass}`}
     >
       <div className="flex transform flex-col transition-transform duration-400 ease-out group-hover:-translate-y-1/2">
         <span className={defaultTextColor}>{children}</span>
         <span className={hoverTextColor}>{children}</span>
       </div>
-    </a>
+    </Link>
+  );
+};
+
+const pageAnimation = () => {
+  document.documentElement.animate(
+    [
+      {
+        opacity: 1,
+        scale: 1,
+        transform: 'translateY(0)',
+      },
+      {
+        opacity: 0.5,
+        scale: 0.9,
+        transform: 'translateY(-100px)',
+      },
+    ],
+    {
+      duration: 1000,
+      easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
+      fill: 'forwards',
+      pseudoElement: '::view-transition-old(root)',
+    },
+  );
+
+  document.documentElement.animate(
+    [
+      {
+        transform: 'translateY(100%)',
+      },
+      {
+        transform: 'translateY(0)',
+      },
+    ],
+    {
+      duration: 1000,
+      easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
+      fill: 'forwards',
+      pseudoElement: '::view-transition-new(root)',
+    },
   );
 };
 
 export function GNB() {
+  const router = useTransitionRouter();
+  const pathname = usePathname();
+  console.log('pathname', pathname);
   const [isOpen, setIsOpen] = useState(false);
   const [headerShapeClass, setHeaderShapeClass] = useState('rounded-full');
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -54,7 +113,7 @@ export function GNB() {
   }, [isOpen]);
 
   const navLinksData = [
-    { label: 'Link 1', href: '#1' },
+    { label: 'Showcase', href: '/showcase' },
     { label: 'Link 2', href: '#2' },
     { label: 'Link 3', href: '#3' },
     { label: 'Link 4', href: '#4' },
@@ -85,9 +144,21 @@ export function GNB() {
       className={`fixed top-12 left-1/2 z-20 flex -translate-x-1/2 transform flex-col items-center py-3 pr-6 pl-6 backdrop-blur-sm ${headerShapeClass} w-[calc(100%-2rem)] border border-[#333] bg-[#00606044] transition-[border-radius] duration-0 ease-in-out sm:w-auto dark:bg-[#1f1f1f57]`}
     >
       <div className="flex w-full items-center justify-between gap-x-6 sm:gap-x-8">
-        <div className="flex items-center">
-          <RocketIcon className="h-7 w-7" color="#990000" strokeWidth={2} />
-        </div>
+        <a
+          href={'/'}
+          onClick={(e) => {
+            e.preventDefault();
+            if (pathname === '/') {
+              return;
+            }
+            router.push('/', {
+              onTransitionReady: () => pageAnimation(),
+            });
+          }}
+        >
+          <HouseIcon className="h-7 w-7" color="#ccc" strokeWidth={1} />
+        </a>
+
         <nav className="hidden items-center space-x-4 text-sm sm:flex sm:space-x-6">
           {navLinksData.map((link) => (
             <AnimatedNavLink key={link.href} href={link.href}>
