@@ -16,3 +16,6 @@ export const MediumLogo = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGE
     </svg>
   ),
 );
+
+MediumLogo.displayName = 'MediumLogo';
+export default MediumLogo;
