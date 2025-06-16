@@ -1,10 +1,18 @@
-import { Particles } from '@/components/showcase/particles';
-import PageWrapper from '@/components/ui/animated-page-wrapper';
+import { PLACES, Place } from '@/lib/constants';
 
-export default function ShowcasePage() {
-  return (
-    <PageWrapper>
-      <Particles />
-    </PageWrapper>
-  );
+import { default as PageClient } from './page-client';
+
+export default async function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
+  const place = PLACES.find((p) => p.slug === params.slug)!;
+
+  return <PageClient place={place} />;
 }
+
+export async function generateStaticParams() {
+  return PLACES.map((place: Place) => ({
+    params: { slug: place.slug },
+  }));
+}
+
+export const dynamic = 'force-static';
