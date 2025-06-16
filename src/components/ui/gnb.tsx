@@ -114,8 +114,8 @@ export function GNB() {
 
   const navLinksData = [
     { label: 'Showcase', href: '/showcase' },
-    { label: 'Link 2', href: '#2' },
-    { label: 'Link 3', href: '#3' },
+    { label: 'Particles', href: '/particles' },
+    { label: 'Another Link ', href: '#1' },
   ];
 
   const linkedInLogo = (

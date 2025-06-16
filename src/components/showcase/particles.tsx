@@ -6,7 +6,7 @@ import { Particles as PTC } from '@/components/three/particles';
 
 export const Particles = () => {
   const color = '#fff';
-  const quantity = 2048;
+  const quantity = 1024;
   const ease = 80;
 
   return (
