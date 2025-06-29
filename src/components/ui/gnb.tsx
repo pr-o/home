@@ -15,7 +15,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
   const router = useTransitionRouter();
   const pathname = usePathname();
 
-  const defaultTextColor = 'text-gray-200 font-semibold';
+  const defaultTextColor = 'text-gray-300 font-semibold';
   const hoverTextColor = 'text-white font-bold';
   const textSizeClass = 'text-sm';
 
@@ -33,7 +33,7 @@ const AnimatedNavLink = ({ href, children }: { href: string; children: React.Rea
       }}
       className={`group relative flex inline-block h-5 items-center overflow-hidden ${textSizeClass}`}
     >
-      <div className="flex transform flex-col transition-transform duration-400 ease-out group-hover:-translate-y-1/2">
+      <div className="flex transform select-none flex-col transition-transform duration-400 ease-out group-hover:-translate-y-1/2">
         <span className={defaultTextColor}>{children}</span>
         <span className={hoverTextColor}>{children}</span>
       </div>

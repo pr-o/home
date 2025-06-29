@@ -82,7 +82,7 @@ const Preloader = ({ onComplete }: PreloaderProps) => {
             variants={opacity}
             initial="initial"
             animate="enter"
-            className="absolute z-10 flex items-center text-4xl font-medium text-white md:text-5xl lg:text-7xl"
+            className="absolute z-10 select-none flex items-center text-4xl font-medium text-white md:text-5xl lg:text-7xl"
           >
             {words[index]}
           </motion.p>
